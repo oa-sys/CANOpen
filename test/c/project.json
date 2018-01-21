@@ -1,0 +1,9 @@
+{
+    "id": "test/c",
+    "type": "package",
+    "value": {
+        "use": ["corto"],
+        "language": "c",
+        "managed": false
+    }
+}

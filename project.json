@@ -2,12 +2,9 @@
     "id": "canopen",
     "type": "package",
     "value": {
-        "description": "Making the world a better place",
-        "author": "Arthur Dent",
+        "description": "CANOpen protocol mount based on SocketCAN",
+        "author": "Alex Hendren",
         "version": "1.0.0",
-        "language": "c",
-        "use": [
-            "corto/test"
-        ]
+        "language": "c"
     }
 }

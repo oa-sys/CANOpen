@@ -1,5 +1,1 @@
-in package test
-
-test/Suite MySuite:/
-    void testSomething()
-
+in package canopen

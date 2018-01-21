@@ -1,0 +1,14 @@
+{
+    "id": "test",
+    "type": "package",
+    "value": {
+        "description": "CANOpen Test",
+        "author": "Alex Hendren",
+        "version": "1.0.0",
+        "language": "c",
+        "use": [
+            "corto/test",
+            "canopen"
+        ]
+    }
+}
