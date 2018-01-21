@@ -11,5 +11,5 @@ and RTOS implementations. We look forward to assisting anyone interested in
 extending the library to support additional CAN stacks.
 <br>
 Protocol Implementation based on the following sources:
-+ CAN in Automation [CIA](https://www.can-cia.org/) Specification [301 v4.2.0](https://github.com/oa-sys/CANOpen/doc/CANOPEN_301v04020006_cor3.pdf)
++ CAN in Automation [CIA](https://www.can-cia.org/) Specification [301 v4.2.0](https://github.com/oa-sys/CANOpen/blob/master/doc/CANOPEN_301v04020006_cor3.pdf)
 + [Wikipedia](https://en.wikipedia.org/wiki/CANopen)
