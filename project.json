@@ -1,8 +1,8 @@
 {
-    "id": "canopen",
+    "id": "driver/mnt/canopen",
     "type": "package",
     "value": {
-        "description": "CANOpen protocol mount based on SocketCAN",
+        "description": "CANOpen industrial protocol mount based on SocketCAN",
         "author": "Alex Hendren",
         "version": "1.0.0",
         "language": "c"

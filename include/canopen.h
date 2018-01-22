@@ -4,22 +4,22 @@
  * Only modify inside the header-end and body-end sections.
  */
 
-#ifndef CANOPEN_H
-#define CANOPEN_H
+#ifndef DRIVER_MNT_CANOPEN_H
+#define DRIVER_MNT_CANOPEN_H
 
 #include <corto/corto.h>
 #include <corto/corto.h>
-#include <canopen/_project.h>
+#include <driver/mnt/canopen/_project.h>
 #include <corto/c/c.h>
 
 /* $header() */
 /* Definitions that are required by package headers (native types) go here. */
 /* $end */
 
-#include <canopen/_type.h>
-#include <canopen/_interface.h>
-#include <canopen/_load.h>
-#include <canopen/c/_api.h>
+#include <driver/mnt/canopen/_type.h>
+#include <driver/mnt/canopen/_interface.h>
+#include <driver/mnt/canopen/_load.h>
+#include <driver/mnt/canopen/c/_api.h>
 
 /* $body() */
 /* Definitions here that need your package headers go here. */

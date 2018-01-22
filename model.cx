@@ -1,1 +1,62 @@
-in package canopen
+in package driver/mnt/canopen
+
+// class sdo:/
+
+// class pdo:/
+
+enum ObjectCode:/
+    NULL,       // 00h
+    DOMAIN,     // 02h
+    DEFTYPE,    // 05h
+    DEFSTRUCT,  // 06h
+    VAR,        // 07h
+    ARRAY,      // 08h
+    RECORD      // 09h
+
+enum DataType:/
+    TYPE_BOOLEAN,
+    TYPE_REAL32,
+    TYPE_UNSIGNED8,
+    TYPE_UNSIGNED16,
+    TYPE_UNSIGNED32,
+    TYPE_INTEGER8,
+    TYPE_INTEGER16,
+    TYPE_INTEGER32,
+    TYPE_STRING_VISIBLE,
+    TYPE_STRING_OCTET,
+    TYPE_STRING_UNICODE,
+    TYPE_TIME_OF_DAY,
+    TYPE_TIME_DIFFERENCE,
+    TYPE_DOMAIN
+
+union ValueType: DataType::
+    b: {canopen/DataType/TYPE_BOOLEAN}, bool
+    real: {canopen/DataType/TYPE_REAL32}, float32
+    u8: {canopen/DataType/TYPE_UNSIGNED8}, uint8
+    u16: {canopen/DataType/TYPE_UNSIGNED16}, uint16
+    u32: {canopen/DataType/TYPE_UNSIGNED32}, uint32
+    i8: {canopen/DataType/TYPE_INTEGER8}, int8
+    i16: {canopen/DataType/TYPE_INTEGER16}, int16
+    i32: {canopen/DataType/TYPE_INTEGER32}, int32
+    strV: {canopen/DataType/TYPE_STRING_VISIBLE}, string
+    strO: {canopen/DataType/TYPE_STRING_OCTET}, octet
+    strU: {canopen/DataType/TYPE_STRING_UNICODE}, word
+    timeDay: {canopen/DataType/TYPE_TIME_OF_DAY}, word
+    timeDiff: {canopen/DataType/TYPE_TIME_DIFFERENCE}, word
+    domain: {canopen/DataType/TYPE_DOMAIN}, word
+    default nil: word
+
+// Dictionary Object Entry
+class Entry:/
+    index:      int16
+    subindex:   int8                // Default: 0x00
+    name:       string
+    code:       canopen/ObjectCode  // Object Code
+    type:       canopen/DataType
+    mandatory:  bool
+
+class deviceInfo:/
+
+
+class device:/
+    id:         int16
