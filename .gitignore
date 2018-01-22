@@ -43,6 +43,7 @@ _type.cpp
 _wrapper.c
 _wrapper.cpp
 _wrapper.h
+c/
 
 #Compiled Object files
 *.slo
