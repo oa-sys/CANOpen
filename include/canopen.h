@@ -9,17 +9,17 @@
 
 #include <corto/corto.h>
 #include <corto/corto.h>
-#include <driver/mnt/canopen/_project.h>
+#include <include/_project.h>
 #include <corto/c/c.h>
 
 /* $header() */
 /* Definitions that are required by package headers (native types) go here. */
 /* $end */
 
-#include <driver/mnt/canopen/_type.h>
-#include <driver/mnt/canopen/_interface.h>
-#include <driver/mnt/canopen/_load.h>
-#include <driver/mnt/canopen/c/_api.h>
+#include <include/_type.h>
+#include <include/_interface.h>
+#include <include/_load.h>
+#include <include/_api.h>
 
 /* $body() */
 /* Definitions here that need your package headers go here. */

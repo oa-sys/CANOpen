@@ -1,31 +1,229 @@
 {
-    "id": "config/can/master/deviceInfo",
-    "scope": [
-        {
-            "id": "DeviceType",
-            "value": {
-                "index": "0x1000",
-                "subindex": "0x00",
-                "name":"DeviceType",
-                "code": "CANOPEN_DEFTYPE",
-                "dataType": "CANOPEN_TYPE_UNSIGNED32",
-                "mandatory": false,
-                "type": "uint32",
-                "default": "1"
-            }
-        },
-        {
-            "id": "Error",
-            "value": {
-                "index": "0x1001",
-                "subindex": "0x00",
-                "name":"Error",
-                "code": "CANOPEN_VAR",
-                "dataType": "CANOPEN_TYPE_UNSIGNED8",
-                "mandatory": true,
-                "type": "uint8",
-                "default": "0"
-            }
-        }
-    ]
+    "id": "config/can/master",
+    "type": "driver/mnt/canopen/Mount",
+    "value": {
+        "deviceInfo" : [
+            {
+                "id": "DeviceType",
+                "type": "driver/mnt/canopen/Entry",
+                "value": {
+                    "index": "0x1000",
+                    "subindex": "0x00",
+                    "code": "VAR",
+                    "dataType": "TYPE_UNSIGNED32",
+                    "access": "RO",
+                    "mandatory": false,
+                    "default": "1"
+                }
+            },
+            {
+                "id": "Error",
+                "type": "driver/mnt/canopen/Entry",
+                "value": {
+                    "index": "0x1001",
+                    "subindex": "0x00",
+                    "code": "VAR",
+                    "dataType": "TYPE_UNSIGNED8",
+                    "access": "RO",
+                    "mandatory": true,
+                    "default": "0"
+                }
+            },
+            {
+                "id": "MfgStatus",
+                "type": "driver/mnt/canopen/Entry",
+                "value": {
+                    "index": "0x1002",
+                    "subindex": "0x00",
+                    "code": "VAR",
+                    "dataType": "TYPE_UNSIGNED32",
+                    "access": "RO",
+                    "mandatory": false,
+                    "default": ""
+                }
+            },
+            {
+                "id": "PredefinedError_Num",
+                "type": "driver/mnt/canopen/Entry",
+                "value": {
+                    "index": "0x1003",
+                    "subindex": "0x00",
+                    "code": "ARRAY",
+                    "dataType": "TYPE_UNSIGNED32",
+                    "access": "RW",
+                    "mandatory": false,
+                    "default": "0"
+                }
+            },
+            {
+                "id": "PredefinedError_01",
+                "type": "driver/mnt/canopen/Entry",
+                "value": {
+                    "index": "0x1003",
+                    "subindex": "0x01",
+                    "code": "ARRAY",
+                    "dataType": "TYPE_UNSIGNED32",
+                    "mandatory": false,
+                    "access": "RO",
+                    "default": "0"
+                }
+            },
+            {
+                "id": "PredefinedError_02",
+                "type": "driver/mnt/canopen/Entry",
+                "value": {
+                    "index": "0x1003",
+                    "subindex": "0x02",
+                    "code": "ARRAY",
+                    "dataType": "TYPE_UNSIGNED32",
+                    "mandatory": false,
+                    "access": "RO",
+                    "default": "0"
+                }
+            },
+            {
+                "id": "PredefinedError_03",
+                "type": "driver/mnt/canopen/Entry",
+                "value": {
+                    "index": "0x1003",
+                    "subindex": "0x03",
+                    "code": "ARRAY",
+                    "dataType": "TYPE_UNSIGNED32",
+                    "mandatory": false,
+                    "access": "RO",
+                    "default": "0"
+                }
+            },
+            {
+                "id": "Sync_COB_Id",
+                "type": "driver/mnt/canopen/Entry",
+                "value": {
+                    "index": "0x1005",
+                    "subindex": "0x00",
+                    "code": "VAR",
+                    "dataType": "TYPE_UNSIGNED32",
+                    "mandatory": true,
+                    "access": "RW",
+                    "default": "0x00000080"
+                }
+            },
+            {
+                "id": "Sync_Comm_Period",
+                "type": "driver/mnt/canopen/Entry",
+                "value": {
+                    "index": "0x1006",
+                    "subindex": "0x00",
+                    "code": "VAR",
+                    "dataType": "TYPE_UNSIGNED32",
+                    "access": "RW",
+                    "mandatory": true,
+                    "default": "0x00000000"
+                }
+            },
+            {
+                "id": "Sync_Window",
+                "type": "driver/mnt/canopen/Entry",
+                "value": {
+                    "index": "0x1007",
+                    "subindex": "0x00",
+                    "code": "VAR",
+                    "dataType": "TYPE_UNSIGNED32",
+                    "access": "RW",
+                    "mandatory": false,
+                    "default": "0x00000000"
+                }
+            },
+            {
+                "id": "Mfg_Device_Name",
+                "type": "driver/mnt/canopen/Entry",
+                "value": {
+                    "index": "0x1008",
+                    "subindex": "0x00",
+                    "code": "VAR",
+                    "dataType": "TYPE_STRING_VISIBLE",
+                    "access": "CONST",
+                    "mandatory": false,
+                    "default": "OASYS_MASTER"
+                }
+            },
+            {
+                "id": "Mfg_HW_Version",
+                "type": "driver/mnt/canopen/Entry",
+                "value": {
+                    "index": "0x1009",
+                    "subindex": "0x00",
+                    "code": "VAR",
+                    "dataType": "TYPE_STRING_VISIBLE",
+                    "access": "CONST",
+                    "mandatory": false,
+                    "default": "0.1"
+                }
+            },
+            {
+                "id": "Mfg_SW_Version",
+                "type": "driver/mnt/canopen/Entry",
+                "value": {
+                    "index": "0x100A",
+                    "subindex": "0x00",
+                    "code": "VAR",
+                    "dataType": "TYPE_STRING_VISIBLE",
+                    "access": "CONST",
+                    "mandatory": false,
+                    "default": "0.1"
+                }
+            },
+            {
+                "id": "Guard_Time",
+                "type": "driver/mnt/canopen/Entry",
+                "value": {
+                    "index": "0x100C",
+                    "subindex": "0x00",
+                    "code": "VAR",
+                    "dataType": "TYPE_UNSIGNED16",
+                    "access": "RW",
+                    "mandatory": true,
+                    "default": "0x00000000"
+                }
+            },
+            {
+                "id": "Life_Time_Factor",
+                "type": "driver/mnt/canopen/Entry",
+                "value": {
+                    "index": "0x100D",
+                    "subindex": "0x00",
+                    "code": "VAR",
+                    "dataType": "TYPE_UNSIGNED8",
+                    "access": "RW",
+                    "mandatory": true,
+                    "default": "0x00000000"
+                }
+            },
+            {
+                "id": "StoreParam",
+                "type": "driver/mnt/canopen/Entry",
+                "value": {
+                    "index": "0x1010",
+                    "subindex": "0x00",
+                    "code": "ARR",
+                    "dataType": "TYPE_UNSIGNED16",
+                    "access": "CONST",
+                    "mandatory": true,
+                    "default": "0"
+                }
+            },
+            {
+                "id": "StoreParam_01",
+                "type": "driver/mnt/canopen/Entry",
+                "value": {
+                    "index": "0x1010",
+                    "subindex": "0x01",
+                    "code": "ARR",
+                    "dataType": "TYPE_UNSIGNED16",
+                    "access": "RW",
+                    "mandatory": false,
+                    "default": "0"
+                }
+            },
+        ]
+    }
 }

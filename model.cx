@@ -1,4 +1,4 @@
-in package driver/mnt/canopen
+in application driver/mnt/canopen
 
 // class sdo:/
 
@@ -29,21 +29,27 @@ enum DataType:/
     TYPE_TIME_DIFFERENCE,
     TYPE_DOMAIN
 
+enum Access:/
+    RO,
+    RW,
+    CONST
+
 // Dictionary Object Entry
 class Entry:/
-    index:      int16
-    subindex:   int8                // Default: 0x00
-    name:       string
+    index:      string
+    subindex:   string              // Default: 0x00
     code:       canopen/ObjectCode  // CANOpen Object Code
     dataType:   canopen/DataType    // CANOpen Data Type
     mandatory:  bool
-    type:       type
+    default:    string
+
+list EntryList: canopen/Entry
 
 // CANOpen Device
 class Mount: vstore/mount:/
-    id:                 int16                   // Device ID
-    deviceInfo:         list{canopen/Entry}     // Device Info
-    pdo:                list{canopen/Entry}     // Process Data Objects
+    id:                 int16                           // Device ID
+    deviceInfo:         EntryList     // Device Info
+    pdo:                EntryList     // Process Data Objects
 
 class Dictionary:/
     int16 construct()

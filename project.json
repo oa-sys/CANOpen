@@ -1,10 +1,14 @@
 {
     "id": "driver/mnt/canopen",
-    "type": "package",
+    "type": "application",
     "value": {
         "description": "CANOpen industrial protocol mount based on SocketCAN",
         "author": "Alex Hendren",
         "version": "1.0.0",
         "language": "c"
-    }
+    },
+    "use": [
+        "corto/ui",
+        "corto/ws"
+    ]
 }
