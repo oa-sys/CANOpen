@@ -1,0 +1,8 @@
+{
+    "id": "config/can/master",
+    "type": "driver/mnt/canopen/mount",
+    "value": {
+        "query.from": "data/can",
+        "id": 10
+    }
+}

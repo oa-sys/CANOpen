@@ -1,0 +1,31 @@
+{
+    "id": "config/can/master/deviceInfo",
+    "scope": [
+        {
+            "id": "DeviceType",
+            "value": {
+                "index": "0x1000",
+                "subindex": "0x00",
+                "name":"DeviceType",
+                "code": "CANOPEN_DEFTYPE",
+                "dataType": "CANOPEN_TYPE_UNSIGNED32",
+                "mandatory": false,
+                "type": "uint32",
+                "default": "1"
+            }
+        },
+        {
+            "id": "Error",
+            "value": {
+                "index": "0x1001",
+                "subindex": "0x00",
+                "name":"Error",
+                "code": "CANOPEN_VAR",
+                "dataType": "CANOPEN_TYPE_UNSIGNED8",
+                "mandatory": true,
+                "type": "uint8",
+                "default": "0"
+            }
+        }
+    ]
+}

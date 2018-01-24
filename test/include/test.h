@@ -10,10 +10,10 @@
 #include <corto/corto.h>
 #include <corto/corto.h>
 #include <test/_project.h>
-#include <canopen/c/c.h>
+#include <driver/mnt/canopen/c/c.h>
 #include <corto/test/c/c.h>
 #include <corto/c/c.h>
-#include <canopen/canopen.h>
+#include <driver/mnt/canopen/canopen.h>
 #include <corto/test/test.h>
 
 /* $header() */
