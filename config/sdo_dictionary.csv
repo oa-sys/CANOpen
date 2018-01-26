@@ -1,0 +1,71 @@
+Index,SubIndex,Name,ObjectCode,DataType,Category,Description,PDO,Access,Default
+1000,00,Device_Type,VAR,UNSIGNED32,MANDATORY,Type of the logical device and its functionality,No,RO,0
+1001,00,Error,VAR,UNSIGNED8,MANDATORY,,Optional,RO,0
+1002,00,Mfg_Status,VAR,UNSIGNED32,OPTIONAL,Manufacturer status register,Optional,RO,0
+1003,00,PredefinedError_Num,ARRAY,UNSIGNED32,OPTIONAL,Number of errors,No,RW,0
+1003,01,PredefinedError_01,ARRAY,UNSIGNED32,OPTIONAL,Standard error field,No,RO,0
+1003,02,PredefinedError_02,ARRAY,UNSIGNED32,OPTIONAL,Standard error field,No,RO,0
+1003,03,PredefinedError_03,ARRAY,UNSIGNED32,OPTIONAL,Standard error field,No,RO,0
+1005,00,Sync_COB_Id,VAR,UNSIGNED32,MANDATORY,COB-ID of the synchronization object (SYNC),No,RW,1610612837
+1006,00,Sync_Comm_Period,VAR,UNSIGNED32,MANDATORY,us period defines the SYNC interval,No,RW,0
+1007,00,Sync_Window,VAR,UNSIGNED32,OPTIONAL,us length of the time window for synchronous PDOs,No,RW,0
+1008,00,Mfg_Device_Name,VAR,VISIBLE_STRING,OPTIONAL,name of the device as given by the manufacturer,No,CONST,OASYS
+1009,00,Mfg_HW_Version,VAR,VISIBLE_STRING,OPTIONAL,manufacturer hardware version,No,CONST,0.1
+100A,00,Mfg_SW_Version,VAR,VISIBLE_STRING,OPTIONAL,manufacturer software version,No,CONST,1.0
+100C,00,Guard_Time,VAR,UNSIGNED16,MANDATORY,configured guard time respectively the life time factor,No,RW,0
+100D,00,Life_Time_Factor,VAR,UNSIGNED8,MANDATORY,life time factor multiplied with the guard time gives the life time for the life guarding protocol,No,RW,0
+1010,00,Store_Param,ARRAY,UNSIGNED32,MANDATORY,highest array sub-index supported,No,CONST,3
+1010,01,Store_Param_01,ARRAY,UNSIGNED32,MANDATORY,Save all parameters,No,RW,0
+1010,02,Store_Param_02,ARRAY,UNSIGNED32,OPTIONAL,save communication parameters,No,RW,0
+1010,03,Store_Param_03,ARRAY,UNSIGNED32,OPTIONAL,save application parameters,No,RW,0
+1011,00,Store_Param,ARRAY,UNSIGNED32,MANDATORY,restore default parameters- highest sub-index supported,No,CONST,3
+1011,01,Store_Param_01,ARRAY,UNSIGNED32,MANDATORY,restore all default parameters,No,RW,0
+1011,02,Store_Param_02,ARRAY,UNSIGNED32,OPTIONAL,restore communication default parameters,No,RW,0
+1011,03,Store_Param_03,ARRAY,UNSIGNED32,OPTIONAL,restore application default parameters,No,RW,0
+1012,00,Time_COB_Id,VAR,UNSIGNED32,MANDATORY,COB-ID of the Time-Stamp Object (TIME),No,RW,1610612837
+1013,00,HR_Timestamp,VAR,UNSIGNED32,OPTIONAL,high resolution time stamp,OPTIONAL,RW,0
+1014,00,EMCY_COB_Id,VAR,UNSIGNED32,MANDATORY,COB-ID for the EMCY write service,No,RW,536871013
+1015,00,EMCY_Inhibit,VAR,UNSIGNED16,OPTIONAL,inhibit time for the EMCY message,NO,RW,0
+1016,00,Consumer_Heartbeat_time,ARRAY,UNSIGNED32,MANDATORY,indicate the expected heartbeat cycle times - Highest sub-index supported,NO,CONST,127
+1016,01-7F,Consumer_Heartbeat_time_index,ARRAY,UNSIGNED32,MANDATORY,Consumer Heartbeat,NO,RW,0
+1017,00,Producer_Heartbeat_Time,VAR,UNSIGNED16,MANDATORY,producer heartbeat time shall indicate the configured cycle time of the heartbeat,NO,RW,0
+1018,00,Identity_Object,RECORD,UNSIGNED32,MANDATORY,Highest sub-index supported,No,CONST,4
+1018,01,Identity_Object_VendorId,RECORD,UNSIGNED32,MANDATORY,Manufacturer Product code,No,RO,65812
+1018,02,Identity_Object_ProductId,RECORD,UNSIGNED32,MANDATORY,Manufacturer product code,No,RO,1
+1018,03,Identity_Object_Revision,RECORD,UNSIGNED32,MANDATORY,Manufacturer revision number,No,RO,65536
+1018,04,Identity_Object_Serial,RECORD,UNSIGNED32,MANDATORY,Manufacturer Serial Number,No,RO,1115888
+1019,00,SYNC_Cnt_Overflow,VAR,UNSIGNED8,OPTIONAL,Synchronous counter overflow value,NO,RW,0
+1020,00,Verify_Cfg,ARRAY,UNSIGNED32,MANDATORY,Highest sub-index supported,NO,CONST,2
+1020,01,Verify_Cfg_Date,ARRAY,UNSIGNED32,MANDATORY,Configuration date,NO,RW,12443
+1020,02,Verify_Cfg_Time,ARRAY,UNSIGNED32,MANDATORY,Configuration time,NO,RW,1800
+1021,00,EDS_Store,VAR,DOMAIN,OPTIONAL,downloaded EDS,NO,RO,
+1022,00,Store_Format,VAR,UNSIGNED16,MANDATORY,format of the storage,NO,RO,0
+1023,00,OS_Command,RECORD,UNSIGNED8,MANDATORY,Highest sub-index supported,NO,CONST,3
+1023,01,OS_Command_01,RECORD,UNSIGNED32,MANDATORY,Command,NO,RW,0
+1023,02,OS_Command_Status,RECORD,UNSIGNED8,MANDATORY,Status,NO,RO,
+1023,03,OS_Command_Reply,RECORD,UNSIGNED8,MANDATORY,Reply,NO,RO,
+1024,00,OS_Command_MOde,VAR,UNSIGNED8,MANDATORY,OS Command Mode,NO,WO,255
+1025,00,OS_Debug,RECORD,UNSIGNED8,MANDATORY,Highest sub-index supported,NO,CONST,3
+1025,01,OS_Debug_Command,RECORD,UNSIGNED32,MANDATORY,Command,NO,RW,0
+1025,02,OS_Debug_Status,RECORD,UNSIGNED8,MANDATORY,Status,NO,RO,
+1025,03,OS_Debug_Reply,RECORD,UNSIGNED8,MANDATORY,Reply,NO,RO,
+1026,00,OS_Prompt,RECORD,UNSIGNED8,MANDATORY,Highest sub-index supported,NO,CONST,3
+1026,01,OS_Prompt_In,RECORD,UNSIGNED8,MANDATORY,StdIn,NO,WO,0
+1026,02,OS_Prompt_Out,RECORD,UNSIGNED8,MANDATORY,StdOut,NO,RO,
+1026,03,OS_Prompt_Error,RECORD,UNSIGNED8,MANDATORY,Error,NO,RO,
+1027,00,Module_List,ARRAY,UNSIGNED16,MANDATORY,Number of connected modules,NO,CONST,0
+1027,01,Module1,ARRAY,UNSIGNED16,MANDATORY,Module 1,NO,RO,
+1027,02-FE,MODULE_LIST,ARRAY,UNSIGNED16,MANDATORY,Module List,NO,RO,
+1028,00,EMCY_Consumer,ARRAY,UNSIGNED32,MANDATORY,Emergency consumer - Highest index supported,NO,CONST,0
+1028,01,EMCY_Consumer1,ARRAY,UNSIGNED16,MANDATORY,Emergency consumer 1,NO,CONST,
+1028,02-7F,EMCY_Consumers,ARRAY,UNSIGNED16,MANDATORY,Emergency consumer 2 to 127,NO,CONST,
+1029,00,Error_Comms_Index,ARRAY,UNSIGNED8,MANDATORY,Highest sub-index supported,NO,CONST,254
+1029,01,Error_Comms,ARRAY,UNSIGNED8,MANDATORY,Communication Error,NO,CONST,0
+1029,02-FE,Error_List,ARRAY,UNSIGNED8,MANDATORY,Profile or manufacturer specific error,NO,CONST,
+1200,00,SDO_Server_Param,RECORD,UNSIGNED32,MANDATORY,Highest sub-index supported,NO,CONST,2
+1200,01,SDO_Server_Param_Rx,RECORD,UNSIGNED32,MANDATORY,COB-ID client -> server (rx),NO,CONST,536872549
+1200,02,SDO_Server_Param_Tx,RECORD,UNSIGNED32,MANDATORY,COB-ID client -> server (rx),NO,CONST,536872421
+1280,00,SDO_Client_Param,RECORD,UNSIGNED32,MANDATORY,Highest sub-index supported,NO,CONST,3
+1280,01,SDO_Client_Param_Rx,RECORD,UNSIGNED32,MANDATORY,COB-ID client -> server (tx),NO,RW,2684354661
+1280,02,SDO_Client_Param_Tx,RECORD,UNSIGNED32,MANDATORY,COB-ID client -> server (rx),NO,RW,2684354661
+1280,03,SDO_Client_Param_ServerId,RECORD,UNSIGNED32,MANDATORY,Node-ID of the SDO server,NO,RW,2684354661

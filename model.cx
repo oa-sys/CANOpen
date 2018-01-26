@@ -36,12 +36,13 @@ enum Access:/
 
 // Dictionary Object Entry
 class Entry:/
-    index:      string
-    subindex:   string              // Default: 0x00
-    code:       canopen/ObjectCode  // CANOpen Object Code
-    dataType:   canopen/DataType    // CANOpen Data Type
-    mandatory:  bool
-    default:    string
+    index:          string
+    subindex:       string              // Default: 0x00
+    description:    string
+    code:           canopen/ObjectCode  // CANOpen Object Code
+    dataType:       canopen/DataType    // CANOpen Data Type
+    mandatory:      bool
+    default:        string
 
 list EntryList: canopen/Entry
 
