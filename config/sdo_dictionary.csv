@@ -9,9 +9,9 @@ Index,SubIndex,Name,ObjectCode,DataType,Category,Description,PDO,Access,Default
 1005,00,Sync_COB_Id,VAR,UNSIGNED32,MANDATORY,COB-ID of the synchronization object (SYNC),No,RW,1610612837
 1006,00,Sync_Comm_Period,VAR,UNSIGNED32,MANDATORY,us period defines the SYNC interval,No,RW,0
 1007,00,Sync_Window,VAR,UNSIGNED32,OPTIONAL,us length of the time window for synchronous PDOs,No,RW,0
-1008,00,Mfg_Device_Name,VAR,VISIBLE_STRING,OPTIONAL,name of the device as given by the manufacturer,No,CONST,OASYS
-1009,00,Mfg_HW_Version,VAR,VISIBLE_STRING,OPTIONAL,manufacturer hardware version,No,CONST,0.1
-100A,00,Mfg_SW_Version,VAR,VISIBLE_STRING,OPTIONAL,manufacturer software version,No,CONST,1.0
+1008,00,Mfg_Device_Name,VAR,STRING_VISIBLE,OPTIONAL,name of the device as given by the manufacturer,No,CONST,OASYS
+1009,00,Mfg_HW_Version,VAR,STRING_VISIBLE,OPTIONAL,manufacturer hardware version,No,CONST,0.1
+100A,00,Mfg_SW_Version,VAR,STRING_VISIBLE,OPTIONAL,manufacturer software version,No,CONST,1.0
 100C,00,Guard_Time,VAR,UNSIGNED16,MANDATORY,configured guard time respectively the life time factor,No,RW,0
 100D,00,Life_Time_Factor,VAR,UNSIGNED8,MANDATORY,life time factor multiplied with the guard time gives the life time for the life guarding protocol,No,RW,0
 1010,00,Store_Param,ARRAY,UNSIGNED32,MANDATORY,highest array sub-index supported,No,CONST,3

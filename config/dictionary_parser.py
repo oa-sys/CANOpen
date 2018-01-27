@@ -112,7 +112,7 @@ class ObjectEntry:
         line = expand("\"{}\": {}".format(member,value), 4, last)
         if last is False:
             line += ","
-        line += "\n"
+            line += "\n"
         return line
 
     def multiple_index(self, member, value):
@@ -133,21 +133,13 @@ class ObjectEntry:
                     self.access, self.default)
                 out += o.dump()
 
-            if x < end:
+            if x < end-1:
                 out += ",\n"
 
         return out
 
     def _index(self, member, value, last=False):
-        val_str = str(value)
-        if "-" in val_str:
-            return self.multiple_index(member, val_str)
-        else:
-            out = int(value, 16)
-            return self.member(member, out, last)
-
-    def _string(self, member, value, last=False):
-        out = "\"{}\"".format(value)
+        out = int(value, 16)
         return self.member(member, out, last)
 
     def _pdo(self, member, value, last=False):
@@ -157,19 +149,89 @@ class ObjectEntry:
             out = "false"
         return self.member(member, out, last)
 
+    def _string(self, member, value, last=False):
+        out = "\"{}\"".format(value)
+        return self.member(member, out, last)
+
+    def _type(self, type_str):
+        """ Convert to Corto type """
+        t = "NULL"
+        v = self.default
+        if type_str == "BOOLEAN":
+            t = "bool"
+            v = self.default.lower()
+        elif type_str == "REAL32":
+            t = "float32"
+            if not v:
+                v = "0"
+        elif type_str == "UNSIGNED8":
+            t = "uint8"
+            if not v:
+                v = "0"
+        elif type_str == "UNSIGNED16":
+            t = "uint16"
+            if not v:
+                v = "0"
+        elif type_str == "UNSIGNED32":
+            t = "uint32"
+            if not v:
+                v = "0"
+        elif type_str == "INTEGER8":
+            t = "int8"
+            if not v:
+                v = "0"
+        elif type_str == "INTEGER16":
+            t = "int16"
+            if not v:
+                v = "0"
+        elif type_str == "INTEGER32":
+            t = "int32"
+            if not v:
+                v = "0"
+        elif type_str == "STRING_VISIBLE":
+            t = "string"
+            v = "\"{}\"".format(self.default)
+        elif type_str == "STRING_OCTET":
+            t = "octet"
+            v = "\"{}\"".format(self.default)
+        elif type_str == "STRING_UNICODE":
+            t = "string"
+            v = "\"{}\"".format(self.default)
+        elif type_str == "TIME_OF_DAY":
+            t = "string"
+            v = "\"{}\"".format(self.default)
+        elif type_str == "TIME_DIFFERENCE":
+            t = "string"
+            v = "\"{}\"".format(self.default)
+        elif type_str == "DOMAIN":
+            t = "word"
+            v = "0"
+
+        type_escape = "\"{}\"".format(t)
+        out = self.member("type", type_escape)
+
+        out += self.member("value", v, True)
+        return out
+
     def dump(self):
-        entry = expand("{", 3)
-        entry += self._index("index", self.index)
-        entry += self._index("subindex", self.sub)
-        entry += self._string("name", self.name)
-        entry += self._string("code", self.code)
-        entry += self._string("type", self.type)
-        entry += self._string("category", self.category)
-        entry += self._string("description", self.description)
-        entry += self._pdo("pdo", self.pdo)
-        entry += self._string("access", self.access)
-        entry += self._string("default", self.default, True)
-        entry += expand("}", 3, False)
+        entry = ""
+        if "-" in self.index:
+            entry += self.multiple_index("index", self.index)
+        elif "-" in self.sub:
+            entry += self.multiple_index("subindex", self.sub)
+        else:
+            entry = expand("{", 3)
+            entry += self._string("name", self.name)
+            entry += self._index("index", self.index)
+            entry += self._index("subindex", self.sub)
+            entry += self._string("code", "CANOPEN_{}".format(self.code))
+            entry += self._string("dataType", "CANOPEN_TYPE_{}".format(self.type))
+            entry += self._string("category", self.category)
+            entry += self._string("description", self.description)
+            entry += self._pdo("pdo", self.pdo)
+            entry += self._string("access", "CANOPEN_{}".format(self.access))
+            entry += self._type(self.type)
+            entry += expand("}", 3, False)
 
         return entry
 
