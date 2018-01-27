@@ -40,7 +40,6 @@ def init_file(output, i, t, m):
     line += expand("\"value\": {", 1)
     line += expand("\"" + m + "\" : [", 2)
 
-    print("Output \n{}".format(line))
     write(output, line)
 
 def close_file(output):
@@ -110,24 +109,67 @@ class ObjectEntry:
         self.default = default
 
     def member(self, member, value, last=False):
-        line = expand("\"" + member + "\": \"" + value + "\"", 4, False)
+        line = expand("\"{}\": {}".format(member,value), 4, last)
         if last is False:
             line += ","
         line += "\n"
         return line
 
+    def multiple_index(self, member, value):
+        index_range = value.split("-")
+        start = int(index_range[0], 16)
+        end = int(index_range[1], 16)
+        print("Start {} End {}".format(start, end))
+
+        out = ""
+        for x in range(start, end):
+            if member == "index":
+                o = ObjectEntry(hex(x), self.sub, self.name, self.code,
+                    self.type, self.category, self.description, self.pdo,
+                    self.access, self.default)
+                out += o.dump()
+            elif member == "subindex":
+                o = ObjectEntry(self.index, hex(x), self.name, self.code,
+                    self.type, self.category, self.description, self.pdo,
+                    self.access, self.default)
+                out += o.dump()
+
+            if x < end:
+                out += ",\n"
+
+        return out
+
+    def _index(self, member, value, last=False):
+        val_str = str(value)
+        if "-" in val_str:
+            return self.multiple_index(member, val_str)
+        else:
+            out = int(value, 16)
+            return self.member(member, out, last)
+
+    def _string(self, member, value, last=False):
+        out = "\"{}\"".format(value)
+        return self.member(member, out, last)
+
+    def _pdo(self, member, value, last=False):
+        if value.lower() == "optional" or value.lower() == "yes":
+            out = "true"
+        else:
+            out = "false"
+        return self.member(member, out, last)
+
     def dump(self):
         entry = expand("{", 3)
-        entry += self.member("index", self.index)
-        entry += self.member("subindex", self.sub)
-        entry += self.member("name", self.name)
-        entry += self.member("code", self.code)
-        entry += self.member("type", self.type)
-        entry += self.member("category", self.category)
-        entry += self.member("description", self.description)
-        entry += self.member("pdo", self.pdo)
-        entry += self.member("access", self.access)
-        entry += self.member("default", self.default, True)
+        entry += self._index("index", self.index)
+        entry += self._index("subindex", self.sub)
+        entry += self._string("name", self.name)
+        entry += self._string("code", self.code)
+        entry += self._string("type", self.type)
+        entry += self._string("category", self.category)
+        entry += self._string("description", self.description)
+        entry += self._pdo("pdo", self.pdo)
+        entry += self._string("access", self.access)
+        entry += self._string("default", self.default, True)
         entry += expand("}", 3, False)
 
         return entry
