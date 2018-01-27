@@ -119,7 +119,6 @@ class ObjectEntry:
         index_range = value.split("-")
         start = int(index_range[0], 16)
         end = int(index_range[1], 16)
-        print("Start {} End {}".format(start, end))
 
         out = ""
         for x in range(start, end):
