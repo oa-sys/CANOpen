@@ -122,13 +122,14 @@ class ObjectEntry:
 
         out = ""
         for x in range(start, end):
+            name = "{}_{}".format(self.name, x)
             if member == "index":
-                o = ObjectEntry(hex(x), self.sub, self.name, self.code,
+                o = ObjectEntry(hex(x), self.sub, name, self.code,
                     self.type, self.category, self.description, self.pdo,
                     self.access, self.default)
                 out += o.dump()
             elif member == "subindex":
-                o = ObjectEntry(self.index, hex(x), self.name, self.code,
+                o = ObjectEntry(self.index, hex(x), name, self.code,
                     self.type, self.category, self.description, self.pdo,
                     self.access, self.default)
                 out += o.dump()
