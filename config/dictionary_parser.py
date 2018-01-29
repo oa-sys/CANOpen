@@ -3,6 +3,10 @@ import sys
 import os
 import configargparse
 
+MOUNT_TYPE = "driver/mnt/canopen/Mount"
+META_TYPE = "driver/mnt/canopen/Meta"
+ENTRY_TYPE = "driver/mnt/canopen/Entry"
+
 argparse = configargparse.ArgParser()
 argparse.add('-i', '--input', type=str, required=True,
     help="Input - Dictionary config file. Example:\n-i sdo_dictionary.csv")
@@ -36,15 +40,13 @@ def init_file(output, i, t, m):
 
     line = "{\n"
     line += expand("\"id\": \"" + i + "\",", 1)
-    line += expand("\"type\": \"" + t + "\",", 1)
-    line += expand("\"value\": {", 1)
-    line += expand("\"" + m + "\" : [", 2)
+    line += expand("\"type\": \"" + MOUNT_TYPE + "\",", 1)
+    line += expand("\"scope\": [", 1)
 
     write(output, line)
 
 def close_file(output):
-    line = expand("]", 2)
-    line += expand("}", 1)
+    line = expand("]", 1)
     line += "}"
 
     write(output, line)
@@ -108,8 +110,8 @@ class ObjectEntry:
         self.access = access
         self.default = default
 
-    def member(self, member, value, last=False):
-        line = expand("\"{}\": {}".format(member,value), 4, last)
+    def member(self, member, value, last=False, indent=6):
+        line = expand("\"{}\": {}".format(member,value), indent, last)
         if last is False:
             line += ","
             line += "\n"
@@ -150,9 +152,9 @@ class ObjectEntry:
             out = "false"
         return self.member(member, out, last)
 
-    def _string(self, member, value, last=False):
+    def _string(self, member, value, last=False, indent=6):
         out = "\"{}\"".format(value)
-        return self.member(member, out, last)
+        return self.member(member, out, last, indent)
 
     def _type(self, type_str):
         """ Convert to Corto type """
@@ -221,18 +223,32 @@ class ObjectEntry:
         elif "-" in self.sub:
             entry += self.multiple_index("subindex", self.sub)
         else:
-            entry = expand("{", 3)
-            entry += self._string("name", self.name)
+            entry = expand("{", 2)
+            entry += self._string("id", self.name, False, 3)
+            entry += self._string("type", ENTRY_TYPE, False, 3)
+            entry += expand("\"value\":", 3)
+            entry += expand("{", 3)
+            entry += expand("\"v\":", 4)
+            entry += expand("{", 4)
+            entry += self._type(self.type)
+            entry += expand("},", 4)
+            entry += expand("\"meta\": ",4)
+            entry += expand("{", 4)
+            entry += self._string("type", META_TYPE, False, 5)
+            entry += expand("\"value\":", 5)
+            entry += expand("{", 5)
             entry += self._index("index", self.index)
             entry += self._index("subindex", self.sub)
-            entry += self._string("code", "CANOPEN_{}".format(self.code))
-            entry += self._string("dataType", "CANOPEN_TYPE_{}".format(self.type))
+            entry += self._string("code", self.code)
+            entry += self._string("dataType", "TYPE_"+self.type)
             entry += self._string("category", self.category)
             entry += self._string("description", self.description)
             entry += self._pdo("pdo", self.pdo)
-            entry += self._string("access", "CANOPEN_{}".format(self.access))
-            entry += self._type(self.type)
-            entry += expand("}", 3, False)
+            entry += self._string("access", self.access, True)
+            entry += expand("}", 5)
+            entry += expand("}", 4)
+            entry += expand("}", 3)
+            entry += expand("}", 2, False)
 
         return entry
 

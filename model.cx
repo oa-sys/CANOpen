@@ -35,16 +35,21 @@ enum Access:/
     CONST
 
 // Dictionary Object Entry
-class Entry:/
+class Meta:/
     index:          int16
     subindex:       int16               // Default: 0x00
     description:    string
     code:           canopen/ObjectCode  // CANOpen Object Code
     dataType:       canopen/DataType    // CANOpen Data Type
     mandatory:      bool
-    default:        string
+    type:           type
+
+class Entry:/
+    meta:           canopen/Meta
+    v:              object
 
 list EntryList: canopen/Entry
+
 
 // CANOpen Device
 class Mount: vstore/mount:/
