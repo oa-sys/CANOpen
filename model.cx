@@ -32,7 +32,13 @@ enum DataType:/
 enum Access:/
     RO,
     RW,
+    WO,
     CONST
+
+enum Category:/
+    OPTIONAL,
+    MANDATORY
+
 
 // Dictionary Object Entry
 class Meta:/
@@ -41,8 +47,9 @@ class Meta:/
     description:    string
     code:           canopen/ObjectCode  // CANOpen Object Code
     dataType:       canopen/DataType    // CANOpen Data Type
-    mandatory:      bool
-    type:           type
+    category:       canopen/Category
+    access:         canopen/Access
+    pdo:            bool
 
 class Entry:/
     meta:           canopen/Meta
