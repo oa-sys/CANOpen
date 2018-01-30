@@ -55,15 +55,21 @@ class Entry:/
     meta:           canopen/Meta
     v:              object
 
-list EntryList: canopen/Entry
+map SubIndexMap: uint32, word
+map IndexMap: uint32, word
 
+class Dictionary:/
+    device:             IndexMap     // Device Info
+    pdo:                IndexMap     // Process Data Objects
+    from:               string
+
+    int16 construct()
+    int16 fill_device()
+    int16 fill_pdo()
 
 // CANOpen Device
 class Mount: vstore/mount:/
     id:                 int16                           // Device ID
-    deviceInfo:         EntryList     // Device Info
-    pdo:                EntryList     // Process Data Objects
+    dictionary:         canopen/Dictionary
 
-class Dictionary:/
     int16 construct()
-    int16 verifyDevice()

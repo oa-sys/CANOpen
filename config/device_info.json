@@ -1,5 +1,5 @@
 {
-    "id": "config/can/master/deviceInfo",
+    "id": "config/can/master/device",
     "type": "void",
     "scope": [
         {
