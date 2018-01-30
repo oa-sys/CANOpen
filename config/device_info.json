@@ -1,5 +1,5 @@
 {
-    "id": "config/can/master/pdo",
+    "id": "config/can/master/deviceInfo",
     "type": "void",
     "scope": [
         {
