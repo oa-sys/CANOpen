@@ -1,9 +1,5 @@
 in application driver/mnt/canopen
 
-// class sdo:/
-
-// class pdo:/
-
 enum ObjectCode:/
     NULL,       // 00h
     DOMAIN,     // 02h
@@ -12,6 +8,16 @@ enum ObjectCode:/
     VAR,        // 07h
     ARRAY,      // 08h
     RECORD      // 09h
+
+enum Timing:/
+    TIMING_10
+    TIMING_20,
+    TIMING_50,
+    TIMING_125,
+    TIMING_250,
+    TIMING_500,
+    TIMING_800,
+    TIMING_1000
 
 enum DataType:/
     TYPE_BOOLEAN,
@@ -39,6 +45,35 @@ enum Category:/
     OPTIONAL,
     MANDATORY
 
+///////////////////////////////////////////////////////////////////////////////
+////// DRIVERS
+///////////////////////////////////////////////////////////////////////////////
+
+enum Driver:/
+    DRIVER_SOCKET_CAN
+
+class SocketCAN:/                       // SocketCAN Driver
+    int16 construct()
+    int16 transmit()
+    int16 receive()
+
+///////////////////////////////////////////////////////////////////////////////
+////// SERVICES
+///////////////////////////////////////////////////////////////////////////////
+
+class Heartbeat:/
+    int16 construct()
+    void destruct()
+    int16 start()
+    int16 stop()
+
+class nmt:/
+    hb:             canopen/Heartbeat
+
+
+///////////////////////////////////////////////////////////////////////////////
+////// DEVICE
+///////////////////////////////////////////////////////////////////////////////
 
 // Dictionary Object Entry
 class Meta:/
@@ -59,8 +94,8 @@ map SubIndexMap: uint32, word
 map IndexMap: uint32, word
 
 class Dictionary:/
-    device:             IndexMap     // Device Info
-    pdo:                IndexMap     // Process Data Objects
+    device:             IndexMap        // Device Info
+    pdo:                IndexMap        // Process Data Objects
     from:               string
 
     int16 construct()
@@ -70,7 +105,9 @@ class Dictionary:/
 
 // CANOpen Device
 class Mount: vstore/mount:/
-    id:                 int16                           // Device ID
+    id:                 int16           // Device ID
+    driver:             canopen/Driver
+    timing:             canopen/Timing
     dictionary:         canopen/Dictionary
 
     int16 construct()
