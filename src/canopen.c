@@ -17,12 +17,19 @@ int cortomain(int argc, char *argv[]) {
     // char *str = corto_serialize(o, "text/corto");
     // corto_warning("Value: [%s]", str);
     if (corto_use(
+        "/home/hendren/dev/oasys/driver-mnt-canopen/config/device_info.json",
+        0,
+        NULL) != 0)
+    {
+        return false;
+    }
+    if (corto_use(
         "/home/hendren/dev/oasys/driver-mnt-canopen/config/mount.json",
         0,
         NULL) != 0)
-        {
+    {
             return false;
-        }
+    }
 
     if (corto_use(
         "/home/hendren/dev/oasys/driver-mnt-canopen/config/ws-server.json",
@@ -40,13 +47,6 @@ int cortomain(int argc, char *argv[]) {
         return false;
     }
 
-    if (corto_use(
-        "/home/hendren/dev/oasys/driver-mnt-canopen/config/device_info.json",
-        0,
-        NULL) != 0)
-    {
-        return false;
-    }
 
 
     while(1) {

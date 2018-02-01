@@ -66,6 +66,7 @@ class Dictionary:/
     int16 construct()
     int16 fill_device()
     int16 fill_pdo()
+    int16 add_entry(canopen/IndexMap map, canopen/Entry entry)
 
 // CANOpen Device
 class Mount: vstore/mount:/
