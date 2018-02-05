@@ -1,7 +1,6 @@
 /* This is a managed file. Do not delete this comment. */
 
 // TODO Add config observer
-
 #include <driver/mnt/canopen/canopen.h>
 /* Default object compare function used as tree comparator in scope rbtree */
 int16_t canopen_Dictionary_construct(
@@ -11,50 +10,23 @@ int16_t canopen_Dictionary_construct(
         goto error;
     }
 
+    if (!this->map) {
+        this->map = corto_create(NULL, NULL, canopen_IndexMap_o);
+    }
+
     if (canopen_Dictionary_fill_device(this)) {
         corto_throw("Failed to map device info configuration.");
         goto error;
     }
 
-    if (canopen_Dictionary_fill_pdo(this)) {
-        corto_throw("Failed to map pdo configuration.");
-        goto error;
-    }
-    
     return 0;
 error:
     return -1;
 }
 
-static
-corto_equalityKind corto_compareInt(
-    corto_type this,
-    const void* o1,
-    const void* o2)
-{
-    corto_assert_object(this);
-    CORTO_UNUSED(this);
-
-    uint32_t lhs = *(uint32_t*)o1;
-    uint32_t rhs = *(uint32_t*)o2;
-    if (lhs == rhs) {
-        return CORTO_EQ;
-    } else if (lhs < rhs) {
-        return CORTO_LT;
-    } else {
-        return CORTO_GT;
-    }
-
-    return CORTO_NEQ;
-}
-
 int16_t canopen_Dictionary_fill_device(
     canopen_Dictionary this)
 {
-    if (!this->device) {
-        this->device = corto_rb_new((corto_equals_cb)corto_compareInt, NULL);
-    }
-
     corto_iter it;
     corto_string from = corto_asprintf("%s/%s", this->from, "device");
     if (corto_select("//").from(from).iter(&it)) {
@@ -70,7 +42,7 @@ int16_t canopen_Dictionary_fill_device(
         corto_dealloc(path);
         /* Verify that config node exists */
         if (entry) {
-            if (canopen_Dictionary_add_entry(this, this->device, entry)) {
+            if (canopen_Dictionary_add_entry(this, this->map, entry)) {
                 corto_throw("Failed to add entry to device dictionary.");
                 goto error;
             }
@@ -79,7 +51,6 @@ int16_t canopen_Dictionary_fill_device(
     }
 
     corto_dealloc(from);
-
     return 0;
 error:
     corto_dealloc(from);
@@ -89,10 +60,6 @@ error:
 int16_t canopen_Dictionary_fill_pdo(
     canopen_Dictionary this)
 {
-    if (!this->pdo) {
-        this->pdo = corto_rb_new((corto_equals_cb)corto_compareInt, NULL);
-    }
-
     corto_iter it;
     corto_string from = corto_asprintf("%s/%s", this->from, "pdo");
     if (corto_select("//").from(from).iter(&it)) {
@@ -108,16 +75,14 @@ int16_t canopen_Dictionary_fill_pdo(
         corto_dealloc(path);
         /* Verify that config node exists */
         if (entry) {
-            if (canopen_Dictionary_add_entry(this, this->pdo, entry)) {
+            if (canopen_Dictionary_add_entry(this, this->map, entry)) {
                 corto_throw("Failed to add entry to pdo dictionary.");
                 goto error;
             }
         }
-
     }
 
     corto_dealloc(from);
-
     return 0;
 error:
     corto_dealloc(from);
@@ -132,22 +97,87 @@ int16_t canopen_Dictionary_add_entry(
     if (corto_instanceof((corto_type)canopen_Entry_o, entry) == true) {
         canopen_SubIndexMap sub = (canopen_SubIndexMap)corto_rb_find(
             map, &entry->meta->index);
+        corto_info("--- Add [%d:%d]",entry->meta->index, entry->meta->subindex);
         if (!sub) {
             /* Create new IndexMap entry for register Index */
-            sub = corto_rb_new((corto_equals_cb)corto_compareInt, NULL);
-            corto_rb_set(map, &entry->meta->index, &sub);
+            sub = (canopen_SubIndexMap)corto_create(NULL, NULL, canopen_SubIndexMap_o);
+            corto_info("1. Pre Sub Count: [%d]", corto_rb_count(sub));
+            corto_info("1. Pre Map Count: [%d]", corto_rb_count(map));
             corto_rb_set(sub, &entry->meta->subindex, &entry);
+            corto_rb_set(map, &entry->meta->index, &sub);
+            corto_info("1. Post Sub Count: [%d]", corto_rb_count(sub));
+            corto_info("1. Post Map Count: [%d]", corto_rb_count(map));
         } else {
             if (!corto_rb_find(sub, &entry->meta->subindex)) {
                 /* Create new SubIndexMap entry for register subindex */
+                corto_info("2: Pre Sub Count: [%d]", corto_rb_count(sub));
                 corto_rb_set(sub, &entry->meta->subindex, &entry);
+                corto_info("2: Post Sub Count: [%d]", corto_rb_count(sub));
             } else {
-                /* Notify of Update (future) - SubIndex exists
-                   Decrease refcount on previously mapped entry */
+                /* SubIndex exists - Decrease refcount on mapped entry */
                 corto_release(entry);
             }
         }
+
     }
 
     return 0;
+}
+
+canopen_Entry canopen_Dictionary_lookup(
+    canopen_Dictionary this,
+    uint16_t index,
+    uint16_t sub)
+{
+    if (!this) {
+        corto_throw("Invalid dictionary handle.");
+        goto error;
+    }
+
+    corto_info("Lookup Sub Map [%d] Map Size [%lu]", index, corto_rb_count(this->map));
+    corto_rb map = (corto_rb)corto_rb_find(this->map, &index);
+
+    if (!map) {
+        corto_throw("Sub index not set for index [%d]", index);
+        goto error;
+    }
+
+    corto_info("Lookup [%d]:[%d] Map Size [%lu]", index, sub, corto_rb_count(map));
+    canopen_Entry result = (canopen_Entry)corto_rb_find(map, &sub);
+
+    if (!result) {
+        corto_throw("Entry not found for index [%d]:[%d]", index, sub);
+        goto error;
+    }
+
+    return result;
+error:
+    return NULL;
+}
+
+int16_t canopen_Dictionary_traverse(
+    canopen_Dictionary this,
+    uint16_t index,
+    uintptr_t callback,
+    uintptr_t data)
+{
+    if (!this) {
+        corto_throw("Invalid dictionary handle.");
+        goto error;
+    }
+
+    canopen_SubIndexMap map = (canopen_SubIndexMap)corto_rb_find(
+        this->map,
+        &index);
+
+    if (!map) {
+        corto_throw("Sub index not set for index [%d]", index);
+        goto error;
+    }
+
+    corto_rb_walk(map, (corto_elementWalk_cb)callback, (void*)data);
+
+    return 0;
+error:
+    return -1;
 }
