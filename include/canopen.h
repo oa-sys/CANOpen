@@ -8,7 +8,6 @@
 #define DRIVER_MNT_CANOPEN_H
 
 #include <corto/corto.h>
-#include <corto/corto.h>
 #include <include/_project.h>
 #include <corto/c/c.h>
 
@@ -22,7 +21,6 @@
 #include <include/_api.h>
 
 /* $body() */
-/* Definitions here that need your package headers go here. */
 /* $end */
 
 #endif

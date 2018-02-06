@@ -84,11 +84,10 @@ class Entry:/
     meta:           canopen/Meta
     v:              object
 
-map SubIndexMap: uint16, word
-map IndexMap: uint16, word
+map IndexMap: uint32, word
 
 class Dictionary:/
-    map:                IndexMap        // Device Info
+    map:                IndexMap, private        // Device Info
     from:               string
 
     int16 construct()
@@ -96,7 +95,7 @@ class Dictionary:/
     int16 fill_pdo()
     int16 add_entry(canopen/IndexMap map, canopen/Entry entry)
     canopen/Entry lookup(uint16 index, uint16 sub)
-    int16 traverse(uint16 index, word callback, word data)
+    int16 traverse(word callback, word data)
 
 // CANOpen Device
 class Mount: vstore/mount:/
@@ -122,8 +121,8 @@ class Heartbeat:/
     void destruct()
     int16 start()
     int16 stop()
-    int16 is_consumer()
-    int16 is_producer()
+    bool is_consumer()
+    bool is_producer()
 
     dictionary:     canopen/dictionary
     thread:         word, private

@@ -2,8 +2,6 @@
 
 #include <include/canopen.h>
 #include <include/nmt.h>
-
-
 int16_t canopen_Heartbeat_construct(
     canopen_Heartbeat this)
 {
@@ -67,7 +65,7 @@ bool canopen_Heartbeat_producer(
 //     return 0;
 // }
 
-int16_t canopen_Heartbeat_is_consumer(
+bool canopen_Heartbeat_is_consumer(
     canopen_Heartbeat this)
 {
     canopen_Entry entry = canopen_Dictionary_lookup(
@@ -83,17 +81,25 @@ int16_t canopen_Heartbeat_is_consumer(
         goto error;
     }
 
-    corto_uint32 maxIndex = (corto_uint32)entry->v;
-    uint32_t value = maxIndex;
+    uint32_t i = 0;
+    for (i = 1; i < *(uint32_t*)entry->v; i++) {
+        canopen_Entry consumer = canopen_Dictionary_lookup(
+            this->dictionary,
+            CANOPEN_HEARTBEAT_CONSUMER_INDEX,
+            i
+        );
+        uint32_t value = *(uint32_t*)consumer->v;
+        if (value > 0) {
+            return true;
+        }
+    }
 
-    corto_info("Max index = %lu", value);
-
-    return 0;
+    return false;
 error:
-    return -1;
+    return false;
 }
 
-int16_t canopen_Heartbeat_is_producer(
+bool canopen_Heartbeat_is_producer(
     canopen_Heartbeat this)
 {
     return 0;

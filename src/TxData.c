@@ -8,6 +8,5 @@ int16_t canopen_TxData_initialize(
     bool rtr,
     uint8_t dlc)
 {
-    /* Insert implementation */
+    return 0;
 }
-
