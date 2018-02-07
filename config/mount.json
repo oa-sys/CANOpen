@@ -3,6 +3,8 @@
     "type": "driver/mnt/canopen/mount",
     "value": {
         "query.from": "data/can",
-        "id": 10
+        "id": 10,
+        "timing": "TIMING_50",
+        "socketType": "DRIVER_SOCKET_CAN"
     }
 }

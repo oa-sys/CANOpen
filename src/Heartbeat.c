@@ -92,6 +92,11 @@ void canopen_Heartbeat_process_producer(
 
     tx->data[0] = 0x88;
 
+    if (canopen_SocketCAN_transmit(this->driver, tx)) {
+        corto_throw("Failed to publish heartbeat producer");
+        goto error;
+    }
+
 error:
     return;
 }

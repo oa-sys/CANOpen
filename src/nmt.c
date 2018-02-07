@@ -10,6 +10,7 @@ int16_t canopen_nmt_construct(
     canopen_Heartbeat hb = canopen_Heartbeat__create(
         this,
         "heartbeat",
+        this->driver,
         this->dictionary,
         (corto_word)this->state);
     if (!hb) {

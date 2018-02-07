@@ -10,6 +10,7 @@ enum ObjectCode:/
     RECORD      // 09h
 
 enum Timing:/
+    TIMING_UNKNOWN,
     TIMING_10
     TIMING_20,
     TIMING_50,
@@ -59,12 +60,16 @@ class TxData:/
     int16 initialize(uint16 ident, bool rtr, uint8 dlc)
 
 enum Driver:/
+    DRIVER_UNKNOWN,
     DRIVER_SOCKET_CAN
 
 class SocketCAN:/                       // SocketCAN Driver
     int16 construct()
     int16 transmit(canopen/TxData data)
     int16 receive()
+
+    id:         int16
+    fd:         int, private
 
 ///////////////////////////////////////////////////////////////////////////////
 ////// DEVICE
@@ -102,11 +107,13 @@ class Dictionary:/
 // CANOpen Device
 class Mount: vstore/mount:/
     id:                 int16           // Device ID
-    driver:             canopen/Driver
+    socketType:         canopen/Driver
     timing:             canopen/Timing
-    dictionary:         canopen/Dictionary
+    dictionary:         canopen/Dictionary, private
+    driver:             canopen/SocketCAN, private
 
     int16 construct()
+    int16 init_driver()
 
 ///////////////////////////////////////////////////////////////////////////////
 ////// NMT SERVICE | NETWORK MANAGEMENT
@@ -129,6 +136,7 @@ class Heartbeat:/
     bool is_producer()
     canopen/Entry producer()
 
+    driver:         canopen/SocketCAN
     dictionary:     canopen/dictionary
     state:          word
     thread:         word, private
@@ -136,6 +144,7 @@ class Heartbeat:/
     frequency:      uint32, private
 
 class nmt:/
+    driver:         canopen/SocketCAN
     dictionary:     canopen/dictionary          // Config dict reference
     hb:             canopen/Heartbeat, private
     state:          canopen/NMTState, private
