@@ -18,6 +18,9 @@ int16_t canopen_Heartbeat_construct(
     canopen_Heartbeat this)
 {
     corto_info("Create heartbeat.");
+
+    this->frequency = 200; //200ms
+
     if (!this->dictionary) {
         corto_throw("Heartbeat [dictionary] invalid");
         goto error;
