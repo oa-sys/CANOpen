@@ -1,6 +1,8 @@
 #ifndef __DRIVER_MNT_CANOPEN__DICTIONARY_H__
 #define __DRIVER_MNT_CANOPEN__DICTIONARY_H__
 
+#include <include/canopen.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif

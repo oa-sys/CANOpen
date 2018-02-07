@@ -7,7 +7,12 @@ int16_t canopen_nmt_construct(
 {
     this->state = CANOPEN_NMT_BOOT;
 
-    if (!canopen_Heartbeat__create(this, "heartbeat", this->dictionary)) {
+    canopen_Heartbeat hb = canopen_Heartbeat__create(
+        this,
+        "heartbeat",
+        this->dictionary,
+        (corto_word)this->state);
+    if (!hb) {
         corto_throw("Failed to create heartbeat.");
         goto error;
     }

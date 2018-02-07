@@ -9,7 +9,11 @@
 
 #include <corto/corto.h>
 #include <include/_project.h>
+#include <corto/ws/c/c.h>
+#include <corto/ui/c/c.h>
 #include <corto/c/c.h>
+#include <corto/ws/ws.h>
+#include <corto/ui/ui.h>
 
 /* $header() */
 /* Definitions that are required by package headers (native types) go here. */

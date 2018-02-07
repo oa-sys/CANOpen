@@ -2,9 +2,7 @@
 
 #include <include/canopen.h>
 #include <include/nmt.h>
-
 void* canopen_Heartbeat_thread(void* arg);
-
 static corto_time canopen_Heartbeat_doubleToTime(double frequency) {
     corto_time result;
     result.sec = frequency;
@@ -25,21 +23,9 @@ int16_t canopen_Heartbeat_construct(
         goto error;
     }
 
-    if (canopen_Heartbeat_is_consumer(this)) {
-        corto_throw("Failed to resolve device heartbeat consumer setting");
+    if (canopen_Heartbeat_start(this)) {
+        corto_throw("Failed to start heartbeat thread.");
         goto error;
-    }
-
-    if (canopen_Heartbeat_is_producer(this)) {
-        corto_throw("Failed to resolve device heartbeat producer setting");
-        goto error;
-    }
-
-    if (this->consumer || this->producer) {
-        if (canopen_Heartbeat_start(this)) {
-            corto_throw("Failed to start heartbeat thread.");
-            goto error;
-        }
     }
 
     return 0;
@@ -50,15 +36,20 @@ error:
 int16_t canopen_Heartbeat_start(
     canopen_Heartbeat this)
 {
+    this->quit = false;
+
     this->thread = (corto_word)corto_thread_new(
             canopen_Heartbeat_thread,
             this);
+
     return 0;
 }
 
 int16_t canopen_Heartbeat_stop(
     canopen_Heartbeat this)
 {
+    this->quit = true;
+
     if (this->thread) {
         corto_thread_join((corto_thread)this->thread, NULL);
     }
@@ -72,26 +63,33 @@ void canopen_Heartbeat_destruct(
     canopen_Heartbeat_stop(this);
 }
 
-bool canopen_Heartbeat_consumer(
+void canopen_Heartbeat_process_consumer(
     canopen_Heartbeat this)
 {
-    return 0;
+    /* Insert implementation */
 }
 
-bool canopen_Heartbeat_producer(
+void canopen_Heartbeat_process_producer(
     canopen_Heartbeat this)
 {
-    return 0;
-}
+    canopen_Entry config = canopen_Heartbeat_producer(this);
+    if (!config) {
+        goto error;
+    }
 
-// static
-// int canopen_Dictionary_traverse2(
-//     corto_object object,
-//     void *ctx)
-// {
-//
-//     return 0;
-// }
+    uint32_t cobId = CANOPEN_HEARTBEAT_COBID_BASE + this->dictionary->id;
+    canopen_TxData tx = canopen_TxData__create(
+        NULL,
+        NULL,
+        cobId,
+        false,
+        1);
+
+    tx->data[0] = 0x88;
+
+error:
+    return;
+}
 
 bool canopen_Heartbeat_is_consumer(
     canopen_Heartbeat this)
@@ -120,6 +118,7 @@ bool canopen_Heartbeat_is_consumer(
         if (value > 0) {
             return true;
         }
+
     }
 
     return false;
@@ -153,16 +152,35 @@ error:
     return false;
 }
 
+canopen_Entry canopen_Heartbeat_producer(
+    canopen_Heartbeat this)
+{
+    canopen_Entry entry = canopen_Dictionary_lookup(
+        this->dictionary,
+        CANOPEN_HEARTBEAT_PRODUCER_INDEX,
+        CANOPEN_HEARTBEAT_PRODUCER_SUBINDEX
+    );
+
+    return entry;
+}
+
 void* canopen_Heartbeat_thread(void* arg)
 {
-    corto_mount this = arg;
+    canopen_Heartbeat this = arg;
     corto_float64 frequency = 1.0;
     corto_time interval = canopen_Heartbeat_doubleToTime(1.0 / frequency);
     corto_time next, current, sleep = {0, 0}, lastSleep = {0, 0};
     corto_time_get(&next);
     next = corto_time_add(next, interval);
     while (!this->quit) {
-        ///TODO DO WORK
+        /* Execute Work */
+        if (canopen_Heartbeat_is_consumer(this)) {
+            canopen_Heartbeat_process_consumer(this);
+        }
+
+        if (canopen_Heartbeat_is_producer(this)) {
+            canopen_Heartbeat_process_producer(this);
+        }
 
         corto_time_get(&current);
         lastSleep = sleep;

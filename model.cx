@@ -48,12 +48,13 @@ enum Category:/
 ///////////////////////////////////////////////////////////////////////////////
 ////// DRIVERS
 ///////////////////////////////////////////////////////////////////////////////
+array DataArr: uint8, 8             // Data Array (8 Bytes)
 
 class TxData:/
-    id:         uint32      // COB-ID (CAN id) for message
-    rtr:        bool        // remote transmission request (RTR) - Default: 0
-    dlc:        uint8       // Data length code
-    array data: uint8, 8    // Data Array (8 Bytes)
+    id:         uint32              // COB-ID (CAN id) for message
+    rtr:        bool                // remote transmission request (RTR) - Default: 0
+    dlc:        uint8               // Data length code
+    data:       DataArr, private    // Data Array (8 Bytes)
 
     int16 initialize(uint16 ident, bool rtr, uint8 dlc)
 
@@ -87,7 +88,8 @@ class Entry:/
 map IndexMap: uint32, word
 
 class Dictionary:/
-    map:                IndexMap, private        // Device Info
+    map:                IndexMap, private       // Device Info
+    id:                 int16                   // Device ID
     from:               string
 
     int16 construct()
@@ -121,13 +123,16 @@ class Heartbeat:/
     void destruct()
     int16 start()
     int16 stop()
+    void process_consumer()
+    void process_producer()
     bool is_consumer()
     bool is_producer()
+    canopen/Entry producer()
 
     dictionary:     canopen/dictionary
+    state:          word
     thread:         word, private
-    consumer:       bool, private
-    producer:       bool, private
+    quit:           bool, private
 
 class nmt:/
     dictionary:     canopen/dictionary          // Config dict reference

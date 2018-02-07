@@ -103,7 +103,7 @@ int16_t canopen_Dictionary_add_entry(
             entry->meta->index,
             entry->meta->subindex);
         if (!corto_rb_find(this->map, &index)) {
-            corto_rb_set(this->map, (void*)index, entry);
+            corto_rb_set(this->map, (void *)(intptr_t)index, entry);
         } else {
             /* Index exists */
         }
@@ -130,7 +130,7 @@ canopen_Entry canopen_Dictionary_lookup(
 
     canopen_Entry result = (canopen_Entry)corto_rb_find(
         this->map,
-        (void*)encoded);
+        (void *)(intptr_t)encoded);
 
     if (!result) {
         corto_throw("Entry not found for index [%d]:[%d] = [%lu]",

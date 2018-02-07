@@ -5,10 +5,13 @@
         "description": "CANOpen industrial protocol mount based on SocketCAN",
         "author": "Alex Hendren",
         "version": "1.0.0",
-        "language": "c"
-    },
-    "use": [
-        "corto/ui",
-        "corto/ws"
-    ]
+        "language": "c",
+        "use": [
+            "corto/ui",
+            "corto/ws"
+        ],
+        "lib": [
+            "m"
+        ]
+    }
 }
