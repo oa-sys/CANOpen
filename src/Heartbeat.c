@@ -77,6 +77,8 @@ void canopen_Heartbeat_process_producer(
         goto error;
     }
 
+    this->frequency = *(uint32_t*)config->v;
+
     uint32_t cobId = CANOPEN_HEARTBEAT_COBID_BASE + this->dictionary->id;
     canopen_TxData tx = canopen_TxData__create(
         NULL,
@@ -167,7 +169,7 @@ canopen_Entry canopen_Heartbeat_producer(
 void* canopen_Heartbeat_thread(void* arg)
 {
     canopen_Heartbeat this = arg;
-    corto_float64 frequency = 1.0;
+    corto_float64 frequency = 1 / this->frequency;
     corto_time interval = canopen_Heartbeat_doubleToTime(1.0 / frequency);
     corto_time next, current, sleep = {0, 0}, lastSleep = {0, 0};
     corto_time_get(&next);

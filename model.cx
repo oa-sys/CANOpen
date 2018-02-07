@@ -133,6 +133,7 @@ class Heartbeat:/
     state:          word
     thread:         word, private
     quit:           bool, private
+    frequency:      uint32, private
 
 class nmt:/
     dictionary:     canopen/dictionary          // Config dict reference
