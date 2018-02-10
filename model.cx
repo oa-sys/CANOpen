@@ -68,8 +68,8 @@ class SocketCAN:/                       // SocketCAN Driver
     int16 transmit(canopen/TxData data)
     int16 receive()
 
-    id:         int16
-    fd:         int, private
+    id:         int32
+    fd:         int32, private
 
 ///////////////////////////////////////////////////////////////////////////////
 ////// DEVICE
