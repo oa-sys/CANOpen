@@ -41,7 +41,7 @@ int16_t canopen_Dictionary_fill_device(
 
 while(corto_iter_hasNext(&it) != 0)
 {
-    corto_result *r = (corto_result*)corto_iter_next(&it);
+    corto_record *r = (corto_record*)corto_iter_next(&it);
     canopen_Entry entry = (canopen_Entry)r->object;
     /* Verify that config node exists */
     if (entry) {
@@ -71,7 +71,7 @@ int16_t canopen_Dictionary_fill_pdo(
 
     while(corto_iter_hasNext(&it) != 0)
     {
-        corto_result *r = (corto_result*)corto_iter_next(&it);
+        corto_record *r = (corto_record*)corto_iter_next(&it);
         corto_string path = corto_asprintf("%s/%s", from, r->id);
         canopen_Entry entry = (canopen_Entry)corto_lookup(root_o, path);
         corto_dealloc(path);

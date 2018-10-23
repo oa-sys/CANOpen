@@ -1,6 +1,6 @@
 in application driver/mnt/canopen
 
-enum ObjectCode:/
+enum ObjectCode {
     NULL,       // 00h
     DOMAIN,     // 02h
     DEFTYPE,    // 05h
@@ -8,8 +8,9 @@ enum ObjectCode:/
     VAR,        // 07h
     ARRAY,      // 08h
     RECORD      // 09h
+}
 
-enum Timing:/
+enum Timing {
     TIMING_UNKNOWN,
     TIMING_10
     TIMING_20,
@@ -19,8 +20,9 @@ enum Timing:/
     TIMING_500,
     TIMING_800,
     TIMING_1000
+}
 
-enum DataType:/
+enum DataType{
     TYPE_BOOLEAN,
     TYPE_REAL32,
     TYPE_UNSIGNED8,
@@ -35,48 +37,54 @@ enum DataType:/
     TYPE_TIME_OF_DAY,
     TYPE_TIME_DIFFERENCE,
     TYPE_DOMAIN
+}
 
-enum Access:/
+enum Access{
     RO,
     RW,
     WO,
     CONST
+}
 
-enum Category:/
+enum Category {
     OPTIONAL,
     MANDATORY
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 ////// DRIVERS
 ///////////////////////////////////////////////////////////////////////////////
 array DataArr: uint8, 8             // Data Array (8 Bytes)
 
-class TxData:/
+class TxData {
     id:         uint32              // COB-ID (CAN id) for message
     rtr:        bool                // remote transmission request (RTR) - Default: 0
     dlc:        uint8               // Data length code
     data:       DataArr, private    // Data Array (8 Bytes)
 
-    int16 initialize(uint16 ident, bool rtr, uint8 dlc)
+    initialize(uint16 ident, bool rtr, uint8 dlc) int16
+}
 
-enum Driver:/
+enum Driver {
     DRIVER_UNKNOWN,
     DRIVER_SOCKET_CAN
+}
 
-class SocketCAN:/                       // SocketCAN Driver
-    int16 construct()
-    int16 transmit(canopen/TxData data)
-    int16 receive()
+class SocketCAN {                       // SocketCAN Driver
+    construct() int16
+    transmit(canopen/TxData data) int16
+    receive() int16
 
     id:         int32
     fd:         int32, private
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 ////// DEVICE
 ///////////////////////////////////////////////////////////////////////////////
 
 // Dictionary Object Entry
-class Meta:/
+class Meta {
     index:          int16
     subindex:       int16               // Default: 0x00
     description:    string
@@ -85,56 +93,61 @@ class Meta:/
     category:       canopen/Category
     access:         canopen/Access
     pdo:            bool
+}
 
-class Entry:/
+class Entry {
     meta:           canopen/Meta
     v:              object
+}
 
 map IndexMap: uint32, word
 
-class Dictionary:/
+class Dictionary {
     map:                IndexMap, private       // Device Info
     id:                 int16                   // Device ID
     from:               string
 
-    int16 construct()
-    int16 fill_device()
-    int16 fill_pdo()
-    int16 add_entry(canopen/IndexMap map, canopen/Entry entry)
-    canopen/Entry lookup(uint16 index, uint16 sub)
-    int16 traverse(word callback, word data)
+    construct() int16
+    fill_device() int16
+    fill_pdo() int16
+    add_entry(canopen/IndexMap map, canopen/Entry entry) int16
+    lookup(uint16 index, uint16 sub) canopen/Entry
+    traverse(word callback, word data) int16
+}
 
 // CANOpen Device
-class Mount: vstore/mount:/
+class Mount: vstore/mount {
     id:                 int16           // Device ID
     socketType:         canopen/Driver
     timing:             canopen/Timing
     dictionary:         canopen/Dictionary, private
     driver:             canopen/SocketCAN, private
 
-    int16 construct()
-    int16 init_driver()
+    construct() int16
+    init_driver() int16
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 ////// NMT SERVICE | NETWORK MANAGEMENT
 ///////////////////////////////////////////////////////////////////////////////
 
-enum NMTState:/
+enum NMTState {
     NMT_BOOT: 0                // Node is booting
     NMT_STOPPED: 4             // Node communication is stopped
     NMT_OPERATIONAL: 5         // Node is operational and can communicate
     NMT_PRE_OPERATIONAL: 127   // Node is not yet operational.
+}
 
-class Heartbeat:/
-    int16 construct()
-    void destruct()
-    int16 start()
-    int16 stop()
-    void process_consumer()
-    void process_producer()
-    bool is_consumer()
-    bool is_producer()
-    canopen/Entry producer()
+class Heartbeat {
+    construct() int16
+    destruct() void
+    start() int16
+    stop() int16
+    process_consumer() void
+    process_producer() void
+    is_consumer() bool
+    is_producer() bool
+    producer() canopen/Entry
 
     driver:         canopen/SocketCAN
     dictionary:     canopen/dictionary
@@ -142,11 +155,13 @@ class Heartbeat:/
     thread:         word, private
     quit:           bool, private
     frequency:      uint32, private
+}
 
-class nmt:/
+class nmt {
     driver:         canopen/SocketCAN
     dictionary:     canopen/dictionary          // Config dict reference
     hb:             canopen/Heartbeat, private
     state:          canopen/NMTState, private
 
-    int16 construct()
+    construct() int16
+}

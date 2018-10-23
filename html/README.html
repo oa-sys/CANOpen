@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="Documentation - Implementation Resources"/>
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Documentation - Implementation Resources">
+    <meta property="og:description" content="Documentation - Implementation Resources">
+    <meta property="og:image" content="https://corto.io/new-site/images/logo.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Documentation - Implementation Resources">
+    <meta name="twitter:description" content="Documentation - Implementation Resources">
+    <meta name="twitter:image" content="https://corto.io/new-site/images/logo.png">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:400,300' rel='stylesheet' type='text/css'>
+    <link href="res/prism.css" rel="stylesheet">
+    <link href="res/doc.css" rel="stylesheet">
+    <link href="res/material.css" rel="stylesheet">
+    <script src="res/jquery-1.11.2.min.js"></script>
+    <link rel="icon" href="../images/logo.png" type="image/x-icon">
+    <title>Implementation Resources | Corto documentation</title>
+  </head>
+  <body>
+    <div class="content">
+      <div class="index">
+        <div class="index-scroll">
+          <div class="index-title">Implementation Resources</div>
+          <ol>
+            <li class="index-h1" onclick="window.location='#Configuration_Object_Dictionary'"><span class="material-icons">chevron_right</span>&nbsp;&nbsp;Object Dictionary<span class="brief"></span></li>
+<li class="index-h2" onclick="window.location='#Object_Dictionary_Object_Code'"><span class="material-icons">subject</span>&nbsp;&nbsp;Object Code
+<li class="index-h2" onclick="window.location='#Object_Dictionary_Access'"><span class="material-icons">subject</span>&nbsp;&nbsp;Access
+
+          </ol>
+        </div>
+      </div>
+      <div class="column">
+        <div class="doc">
+          <div class="indent"><p>Implementation Resources</p></div>
+          <hr>
+          <div class="indent">
+<p class="description"><p>Corto mount for connecting to Master &amp; Slave devices over the CANOpen protocol.</p>
+</p>
+
+</div>
+<div class="indent">
+
+<a name="Configuration_Object_Dictionary"></a>
+<p class="section">Object Dictionary</p>
+<div class="indent">
+
+<a name="Object_Dictionary_Object_Code"></a>
+<h2>Object Code</h2>
+<hr>
+<div class="indent">
+<table>
+<thead>
+<tr>
+<th>Object Name</th>
+<th>Comments</th>
+<th>Supported</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>NULL</td>
+<td>An object with no data fields</td>
+<td>X</td>
+</tr>
+<tr>
+<td>DOMAIN</td>
+<td>Large variable amount of data e.g.executable program code. Application controls data and length.</td>
+<td></td>
+</tr>
+<tr>
+<td>DEFTYPE</td>
+<td>Denotes a basic type definition such as a BOOLEAN, UNSIGNED16, FLOAT and so on</td>
+<td>X</td>
+</tr>
+<tr>
+<td>DEFSTRUCT</td>
+<td>Defines a new record type e.g. the PDO mapping structure at 21h. For use with RECORD</td>
+<td></td>
+</tr>
+<tr>
+<td>VAR</td>
+<td>A single value such as an UNSIGNED8, BOOLEAN, FLOAT, INTEGER16, VISIBLE STRING etc. Subindex = 0</td>
+<td>X</td>
+</tr>
+<tr>
+<td>ARRAY</td>
+<td>A multiple data field object where each data field is a simple variable of the SAME basic data type e.g. array of UNSIGNED16 etc. Sub-index 0 is of UNSIGNED8 and therefore not part of the ARRAY data. Subindex 1 - <array length> specifies sub-member.</td>
+<td></td>
+</tr>
+<tr>
+<td>RECORD</td>
+<td>A multiple data field object where the data fields may be any combination of simple variables. Sub-index 0 is of UNSIGNED8 and sub-index 255 is of UNSIGNED32 and therefore not part of the RECORD data. Subindex 1 - <array length> specifies sub-member.</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+</div>
+<a name="Object_Dictionary_Access"></a>
+<h2>Access</h2>
+<hr>
+<div class="indent">
+<p>The Attribute defines the access rights for a particular object. The viewpoint is from the network into the CANOpen device.
+It shall be one of the following:
+| Attribute |                                                                                Description                                                                                |
+|:---------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|     rw    | read and write access                                                                                                                                                     |
+|     ro    | write only access                                                                                                                                                         |
+|     ro    | read only access                                                                                                                                                          |
+|   const   | read-only access, value is constant The value may change in NMT state Initialisation.The value shall not change in the NMT states pre-operation, operational and stopped. |</p>
+
+<p>CANOpen implementation implements support for CANOpen (Layers 3-7). Library is
+currently dependent on SocketCAN (available on most Linux distros). Other
+CANOpen libraries such as
+<a href="https://github.com/CANopenNode/CANopenNode">CANopenNode</a>
+have integrated support for native CAN data link implementations for embedded
+and RTOS implementations. We look forward to assisting anyone interested in
+extending the library to support additional CAN stacks.
+<br>
+Protocol Implementation based on the following sources:
++ CAN in Automation <a href="https://www.can-cia.org/">CIA</a> Specification <a href="https://github.com/oa-sys/CANOpen/blob/master/doc/CANOPEN_301v04020006_cor3.pdf">301 v4.2.0</a>
++ <a href="https://en.wikipedia.org/wiki/CANopen">Wikipedia</a></p>
+
+</div>
+</div>
+</div>
+<div class="indent">
+
+</div>
+
+        </div>
+      </div>
+    </div>
+    <script src="res/prism.js"></script>
+    <script>
+        // Code to make index highlight when scrolling
+        var parElements = [];
+        var parHeaders = [];
+
+        $(document).ready(function() {
+            parElements = $('li');
+            resize();
+            scrollItems();
+
+            // Smooth scroll
+            $('a').click(function(){
+              $('html, body').animate({
+                scrollTop: $( $.attr(this, 'href') ).offset().top
+              }, 200);
+              return false;
+            });
+
+            // Update highlighted link
+            $(".doc").on('scroll', function() {scrollItems()});
+
+            // Initialize data-expand attribute
+            $(".index-h1").attr("data-expand", "false");
+
+            // Toggle expand on click
+            $(".index-h1").click(function() {
+                var expand = $(this).attr("data-expand");
+                if (expand == "true") {
+                    expand = "false"
+                } else {
+                    expand = "true";
+                }
+                $(this).attr("data-expand", expand);
+                scrollItems();
+            });
+
+            function scrollItems() {
+                var index;
+
+                for (var i = 0; i < parHeaders.length; i++) {
+                    if ($(parHeaders[i]).offset().top > 0) {
+                        index = i - 1;
+                        break;
+                    }
+                }
+
+                if (index < 0) index = 0;
+
+                items = $('div.index-scroll li');
+
+                for (var i = 0; i < parElements.length; i++) {
+                    // If current element equals index of element currently being
+                    // viewed by the user, it is the active element.
+                    if (i != index) {
+                        $(parElements[i]).removeClass('active');
+                    } else {
+                        $(parElements[i]).addClass('active');
+
+                        var pos = $(parElements[i]).offset().top;
+                        if (pos < 130 || pos > (window.innerHeight - 30)) {
+                          var elem = $('div.index-scroll');
+                          elem.scrollTop(elem.scrollTop() + pos - 130);
+                        }
+
+                        // Show all h2 list items after the current h1 and
+                        // before the next h1
+                        var active = false;
+                        var lastH1, activeH1 = undefined;
+
+                        // First, find the h1 list item that belongs to the
+                        // current active item
+                        items.each(function() {
+                            if ($(this).hasClass('index-h1')) {
+                                lastH1 = this
+                            } else if (this == parElements[i]) {
+                                activeH1 = lastH1
+                            }
+                        });
+
+                        // Show & hide items
+                        items.each(function() {
+                            if ($(this).hasClass('index-h1')) {
+                                var expand = $(this).attr("data-expand");
+                                if (activeH1 == this || expand == "true") {
+                                    active = true;
+                                } else {
+                                    active = false;
+                                }
+                            } else {
+                                if (active == false) {
+                                    $(this).hide();
+                                } else {
+                                    $(this).show();
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+
+            // Update highlight on link clickn
+            $('.navigation ul li a').click(function () {
+              $('.navigation ul li a').removeClass('active');
+                $(this).addClass('active');
+            });
+        });
+
+        // Code to resize font of title in index to size of div
+        var rtime;
+        var timeout = false;
+        var delta = 100;
+        $(window).resize(function() {
+            rtime = new Date();
+            if (timeout === false) {
+                timeout = true;
+                setTimeout(resizeend, delta);
+            }
+        });
+        function resizeend() {
+            if (new Date() - rtime < delta) {
+                setTimeout(resizeend, delta);
+            } else {
+                timeout = false;
+                resize();
+            }
+        }
+        function resize() {
+            $('.resize').each(function(i, obj) {
+                $(this).css('font-size', '20px');
+                while ($(this).width() > ($(this).parent().width() - 10)) {
+                    $(this).css('font-size', (parseInt($(this).css('font-size')) - 1) + "px");
+                }
+            });
+
+            $('p.section,h2').each(function() {
+                parHeaders.push(this);
+            });
+
+            // Hack to give the doc the right height
+            $('.doc').css('height', window.innerHeight + 'px');
+
+            // Hack to give doc the right width
+   //         $('.doc').css('width', window.innerWidth - 300 + 'px');
+            if (window.innerWidth > 1100) {
+              $('.doc').css('width', 800 + 'px');
+            } else if (window.innerWidth > 800) {
+              $('.doc').css('width', window.innerWidth - 300 + 'px');
+            } else {
+              $('.doc').css('width', window.innerWidth + 'px');
+            }
+
+            // Hack to give index the right height
+            $('.index-scroll').css('height', window.innerHeight - $('.nav').height() + 'px');
+        }
+    </script>
+  </body>
+</html>
